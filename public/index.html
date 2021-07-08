@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/style.css" />
+
+
+    <title>Term Project</title>
+</head>
+
+<body>
+    <div class="my-banner">My Awesome Online Store</div>
+
+    <!--Menu Bar--->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <button id="menu-signin" class="btn btn-outline-danger modal-pre-auth" data-bs-toggle="modal"
+                            data-bs-target="#modal-signin">Sign In/Up</button>
+                    </li>
+                    <li class="nav-item">
+                        <button id="menu-home" class="btn btn-outline-primary">Home</button>
+                        <!--users will add/review products here-->
+                    </li>
+                    <li class="nav-item">
+                        <button id="menu-purchases" class="btn btn-outline-primary modal-user-post-auth">Purchase
+                            History</button>
+                        <!--check purchase history-->
+                    </li>
+                    <li class="nav-item">
+                        <button id="menu-products" class="btn btn-outline-primary modal-admin-post-auth">Products</button>
+                        <!--for admins to edit/delete products-->
+                    </li>
+                    <li class="nav-item">
+                        <button id="menu-users" class="btn btn-outline-primary modal-admin-post-auth">Users</button>
+                        <!--Admins will manage users here-->
+                    </li>
+                    <li class="nav-item">
+                        <button id="menu-signout" class="btn btn-outline-danger modal-post-auth">Sign Out</button>
+                    </li>
+                </ul>
+                <button id="menu-cart" class="btn btn-outline-success modal-user-post-auth">
+                    <img src="images/cart.png" width="30px">(<span id="shoppingcart-count">0</span>)
+                </button>
+                <button id="menu-profile" class="btn btn-outline-success modal-user-post-auth">Profile</button>
+                <div class="modal-user-post-auth">
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Modal Sign In -->
+    <div class="modal fade" id="modal-signin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modal-signin-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-signin-label" data-bs-toggle="modal"
+                        data-bs-target="#modal-signin">Sign In, Please!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-signin">
+                        <div>
+                            <input type="email" name="email" placeholder="email address">
+                        </div>
+                        <div>
+                            <input type="password" name="password" placeholder="enter password">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-outline-primary">Sign In</button>
+                        </div>
+                    </form>
+                    <div>
+                        No accout yet?
+                        <button id="button-signup" class="btn btn-outline-info">Create New Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal: info box -->
+    <div class="modal fade" id="modal-info" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modal-info-title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-info-title"></h5>
+                </div>
+                <div class="modal-body" id="modal-info-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal: sign up -->
+<div class="modal fade" id="modal-signup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="modal-signup-title" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="modal-signup-title">Create a New Account</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+         <form id="form-signup" method="post">
+             <div>
+                 <input type="email" name="email" placeholder="email address" required>
+             </div>
+             <div>
+                 <input type="password" name="password" placeholder="password" required minlength="6">
+             </div>
+             <div>
+               <input type="password" name="passwordConfirm" placeholder="passwordConfirm" required minlength="6">
+               <p id="form-signup-password-error" style="color: red;"></p>
+             </div>
+             <div>
+                 <button type="submit" class="btn btn-outline-primary">Create</button>
+             </div>
+         </form>
+       </div>
+     </div>
+   </div>
+ </div>
+
+    <!-- Modal: update password -->
+<div class="modal fade" id="modal-update-password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="modal-update-password-title" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="modal-update-password-title">Update Password</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+         <form id="form-update-password" method="post">
+            <div>
+                <input type="password" name="oldPassword" placeholder="Enter Previous Password" required minlength="6">
+            </div>
+             <div>
+                 <input type="password" name="newPassword" placeholder="New Password" required minlength="6">
+             </div>
+             <div>
+               <input type="password" name="passwordConfirm" placeholder="Confirm New Password" required minlength="6">
+               <p id="form-update-password-error" style="color: red;"></p>
+             </div>
+             <div>
+                 <button type="submit" class="btn btn-outline-primary">Update</button>
+             </div>
+         </form>
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+ <!-- Modal: add product -->
+<div class="modal fade" id="modal-add-product" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-add-product-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-add-product-label">Add New Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="form-add-product">
+            <div>
+              <input type="text" name="name" placeholder="product name">
+              <p id="form-add-product-error-name" class="my-error"></p>
+            </div>
+            <div>
+              <input type="text" name="price" placeholder="price ($)">
+              <p id="form-add-product-error-price" class="my-error"></p>
+            </div>
+            <div>
+              Summary <br>
+              <textarea name="summary"></textarea>
+              <p id="form-add-product-error-summary" class="my-error"></p>
+            </div>
+            <div>
+              <img id="form-add-product-image-tag" style="display: block;"/>
+              <input id="form-add-product-image-button" type="file" value="upload"/>
+              <p id="form-add-product-error-image" class="my-error"></p>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-outline-primary">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Modal Edit product-->
+<div class="modal fade" id="modal-edit-product" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-edit-product-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-edit-product-title">Edit Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="form-edit-product" method="post">
+              <input type="hidden" name="docId"/>
+              <input type="hidden" name="imageName"/>
+              <div>
+                Name: <input type="text" name="name"/>
+                <p id="form-edit-product-error-name" class="my-error"></p>
+              </div>
+              <div>
+                Price: <input type="text" name="price"/>
+                <p id="form-edit-product-error-price" class="my-error"></p>
+              </div>
+              <div>
+                Summary:<br><textarea type="text" name="summary"></textarea>
+                <p id="form-edit-product-error-summary" class="my-error"></p>
+              </div>
+              <div>
+                <img id="form-edit-product-image-tag" style="display: block;">
+                <p id="form-edit-product-error-image" class="my-error"></p>
+                <input type="file" id="form-edit-product-image-button" value="upload">
+              </div>
+              <div>
+                <button type="submit" class="btn btn-outline-primary">Update</button>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+   <!-- Modal: transaction detail view -->
+<div class="modal fade" id="modal-transaction-view" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+aria-labelledby="modal-transaction-title" aria-hidden="true">
+<div class="modal-dialog modal-dialog-scrollable modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-transaction-title"></h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body" id="modal-transaction-body"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+    <div id="root" class="bg-light p-5 m-3"></div>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/8.6.2/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/8.6.2/firebase-auth.js"></script>
+    <script defer src="/__/firebase/8.6.2/firebase-firestore.js"></script>
+    <script defer src="/__/firebase/8.6.1/firebase-functions.js"></script>
+    <script defer src="/__/firebase/8.6.2/firebase-storage.js"></script>
+
+    <!-- 
+   initialize the SDK after all desired features are loaded, set useEmulator to false
+   to avoid connecting the SDK to running emulators.
+     -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <script type="module" src="./app.js"></script>
+
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
