@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "wsp-sprint1-lvn",
+    "site": "",
     "public": "public",
     "ignore": [
       "firebase.json",

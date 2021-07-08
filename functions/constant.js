@@ -7,5 +7,6 @@ exports.adminEmails = [
 ]
 
 exports.collectionNames = {
-    PRODUCT: 'products'
+    PRODUCT: 'products',
+    REVIEWS: 'reviews'
 }

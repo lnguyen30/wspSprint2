@@ -21,13 +21,25 @@ exports.cf_deleteProduct = functions.https.onCall(deleteProduct);
 exports.cf_getUserList = functions.https.onCall(getUserList);
 exports.cf_updateUser = functions.https.onCall(updateUser);
 exports.cf_deleteUser = functions.https.onCall(deleteUser); 
+exports.cf_deleteReview = functions.https.onCall(deleteReview);
 
 //returns true or false if the email passed in is an admin account
 function isAdmin(email){
     return Constant.adminEmails.includes(email);
 }
 
+//deletes reviews in firestore, called in fb_controller deleteReview
+async function deleteReview(docId){
 
+    try{
+        await admin.firestore().collection(Constant.collectionNames.REVIEWS)
+            .doc(docId).delete();
+     }catch(e){
+        if(Constant.DEV) console.log(e);
+        throw new functions.https.HttpsError('internal', 'deleteReview Failed');
+     }
+
+}
 
 //deletes users 
 async function deleteUser(data, context){
@@ -171,10 +183,6 @@ async function getProductById(data, context){
 
     }
 
-}
-
-async function getUsersProductByName(){
-    
 }
 
 

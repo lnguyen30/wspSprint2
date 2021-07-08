@@ -5,6 +5,9 @@ import * as Auth from './auth.js'
 import { ShoppingCart } from '../model/ShoppingCart.js';
 import { Review } from '../model/review.js';
 
+
+
+
 // calls firebase to sign in user 
 export async function signIn(email, password){
     await firebase.auth().signInWithEmailAndPassword(email, password);
@@ -263,3 +266,10 @@ const cf_deleteUser = firebase.functions().httpsCallable('cf_deleteUser')
 export async function deleteUser(uid){
     await cf_deleteUser(uid);
 }
+
+const cf_deleteReview = firebase.functions().httpsCallable('cf_deleteReview');
+export async function deleteReview(docId){
+    await cf_deleteReview(docId);
+}
+
+//deleteReview, might pass in user's email for authentication

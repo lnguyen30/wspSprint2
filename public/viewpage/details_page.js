@@ -5,6 +5,7 @@ import * as FirebaseController from '../controller/firebase_controller.js'
 import * as Constant from '../model/constant.js'
 import * as  Route from '../controller/route.js'
 import {Review} from '../model/review.js';
+import * as Edit from '../controller/edit_review.js'
 
 
 
@@ -27,9 +28,26 @@ export function addDetailsFormSubmitEvent(form){
     })
 }
 
+//event listener for deleting replies
+export function addDeleteEventListeners(deleteForm){
+    for(let i = 0; i<deleteForm.length; i++){
+        deleteForm[i].addEventListener('submit', async e =>{
+            e.preventDefault();
+            //confirmation
+            if(!window.confirm('Press Ok to delete')) return;
+            //disables button
+            const button = e.target.getElementsByTagName('button')[0];
+            const label = Util.disableButton(button);
+            //passes docId to edit_review.js in edit controller
+            await Edit.delete_review(e.target.docId.value, e.target.email.value)
+            Util.enableButton(button, label);
+
+        })
+    }
+}
 
 export async function details_page(productId){
-  
+  console.log(Auth.currentUser)
     if(!productId){
         Util.info('Error', 'Invalid Product Id: invalid access')
         return;
@@ -91,6 +109,7 @@ export async function details_page(productId){
     `
 
     Element.root.innerHTML = html
+
 
     //event listener for 'Post Review'
     document.getElementById('button-add-new-review').addEventListener('click', async ()=>{
@@ -155,16 +174,28 @@ export async function details_page(productId){
 
         const reviewTag = document.createElement('div')
         reviewTag.innerHTML = buildReviewView(review) // builds reply box
+        
         //apends new replies at the bottom of each reply
         document.getElementById('message-review-body').appendChild(reviewTag)
         //clears reply box
         document.getElementById('textarea-add-new-review').value = ''
 
         Util.enableButton(button, label);
+
+        //each time the a review is added, delete reviews event listeners are added to each review
+        const deleteRepliesForm = document.getElementsByClassName('form-delete-review')
+        addDeleteEventListeners(deleteRepliesForm);
+        
     })
+
+ //each time the a details page is rendered, delete reviews event listeners are added to each review
+ const deleteRepliesForm = document.getElementsByClassName('form-delete-review')
+ addDeleteEventListeners(deleteRepliesForm);
+
+     
 }
 
-// includes update button
+// includes update button and delete button
 //builds reviews for products
 function buildReviewView(review){
     return `
@@ -174,15 +205,20 @@ function buildReviewView(review){
             </div>
                 <div class="card-body">
                 <p class="card-text"> ${review.content} </p>
-                <form class="form-update-reply ${Auth.currentUser ? 'd-block' : 'd-none'}" method="post">
+                <div class="btn-group">
+                <form class="form-delete-review ${Auth.currentUser ? 'd-block' : 'd-none'}" method="post">
                     <input type="hidden" name="docId" value=${review.docId}>
                     <input type="hidden" name="email" value=${review.email}>
+                    <button class="btn btn-outline-danger" type="post">delete</button>
                 </form>
+                </div>
             </div>
         </div>
         <br>
     `;
 }
+
+
 
 // use compound queries to search through users purchase history
 //make function to retrieve user's product from purchase history
