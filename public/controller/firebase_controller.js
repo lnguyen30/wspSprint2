@@ -291,6 +291,7 @@ export async function getReviewById(docId){
     }
 }
 
+//cloud function to update reviews
 const cf_updateReview = firebase.functions().httpsCallable('cf_updateReview')
 export async function updateReview(review){
     const docId = review.docId

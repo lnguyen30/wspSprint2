@@ -18,7 +18,7 @@ export function addEventListeners(){
         const button = e.target.getElementsByTagName('button')[0];
         const label = Util.disableButton(button);
 
-         //checks if current user can update their replies by their emails
+         //checks if current user can update their reviews by their emails
          if(Auth.currentUser.email != e.target.email.value){
             Util.info('Error', 'Cannot update other user\'s replies', Element.modalUpdateReply);
             Util.enableButton(button, label)
@@ -44,7 +44,7 @@ export function addEventListeners(){
                  return;
              }
 
-        //update new reply to firebase, calls firebase controller update reply function
+        //update new review to firebase, calls firebase controller update review function
         try{
             await FirebaseController.updateReview(r)
             //updates browser
