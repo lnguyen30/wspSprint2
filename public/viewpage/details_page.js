@@ -28,7 +28,7 @@ export function addDetailsFormSubmitEvent(form){
     })
 }
 
-//event listener for deleting replies
+//event listener for deleting reviews
 export function addDeleteEventListeners(deleteForm){
     for(let i = 0; i<deleteForm.length; i++){
         deleteForm[i].addEventListener('submit', async e =>{
@@ -46,8 +46,24 @@ export function addDeleteEventListeners(deleteForm){
     }
 }
 
+
+//event listener for update review
+export function addUpdateEventListeners(updateForm){
+    for(let i = 0; i<updateForm.length; i++){
+        updateForm[i].addEventListener('submit', async e =>{
+            e.preventDefault();
+            //disables button
+            const button = e.target.getElementsByTagName('button')[0];
+            const label = Util.disableButton(button);
+            //passes docId to edit_review.js in edit controller
+            await Edit.update_review(e.target.docId.value, e.target.email.value)
+            Util.enableButton(button, label);
+
+        })
+    }
+}
+
 export async function details_page(productId){
-  console.log(Auth.currentUser)
     if(!productId){
         Util.info('Error', 'Invalid Product Id: invalid access')
         return;
@@ -167,6 +183,8 @@ export async function details_page(productId){
         try{
             const docId = await FirebaseController.addReview(review);
             review.docId = docId;
+            // // updates page with new review
+            // details_page(productId);
         }catch(e){
             if (Const.DEV) console.log(e);
             Util.info('Error', JSON.stringify(e));
@@ -176,21 +194,27 @@ export async function details_page(productId){
         reviewTag.innerHTML = buildReviewView(review) // builds reply box
         
         //apends new replies at the bottom of each reply
-        document.getElementById('message-review-body').appendChild(reviewTag)
+        document.getElementById('message-review-body').prepend(reviewTag)
         //clears reply box
         document.getElementById('textarea-add-new-review').value = ''
 
         Util.enableButton(button, label);
 
         //each time the a review is added, delete reviews event listeners are added to each review
-        const deleteRepliesForm = document.getElementsByClassName('form-delete-review')
-        addDeleteEventListeners(deleteRepliesForm);
+        const deleteReviewsForm = document.getElementsByClassName('form-delete-review')
+        addDeleteEventListeners(deleteReviewsForm);
+
+        const updateReviewsForm = document.getElementsByClassName('form-update-review')
+        addUpdateEventListeners(updateReviewsForm)
         
     })
 
  //each time the a details page is rendered, delete reviews event listeners are added to each review
- const deleteRepliesForm = document.getElementsByClassName('form-delete-review')
- addDeleteEventListeners(deleteRepliesForm);
+ const deleteReviewsForm = document.getElementsByClassName('form-delete-review')
+ addDeleteEventListeners(deleteReviewsForm);
+
+ const updateReviewsForm = document.getElementsByClassName('form-update-review')
+ addUpdateEventListeners(updateReviewsForm)
 
      
 }
@@ -210,6 +234,11 @@ function buildReviewView(review){
                     <input type="hidden" name="docId" value=${review.docId}>
                     <input type="hidden" name="email" value=${review.email}>
                     <button class="btn btn-outline-danger" type="post">delete</button>
+                </form>
+                <form class="form-update-review ${Auth.currentUser ? 'd-block' : 'd-none'}" method="post">
+                    <input type="hidden" name="docId" value=${review.docId}>
+                    <input type="hidden" name="email" value=${review.email}>
+                    <button class="btn btn-outline-primary" type="post">update</button>
                 </form>
                 </div>
             </div>

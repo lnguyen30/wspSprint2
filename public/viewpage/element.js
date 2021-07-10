@@ -35,6 +35,10 @@ export const formEditProduct = {
     errorSummary: document.getElementById('form-edit-product-error-summary'),
     errorImage: document.getElementById('form-edit-product-error-image'),
 }
+// form to update review from update review modal
+export const formUpdateReview = {form:document.getElementById('form-update-review'),     
+errorContent: document.getElementById('form-update-review-error-content'),
+}
 
 
 //modal
@@ -49,6 +53,8 @@ export const modalEditProduct = new bootstrap.Modal(document.getElementById('mod
 export const modalTransactionView = new bootstrap.Modal(document.getElementById('modal-transaction-view'), {backdrop: 'static'});
 export const modalTransactionTitle = document.getElementById('modal-transaction-title');
 export const modalTransactionBody = document.getElementById('modal-transaction-body');
+export const modalUpdateReview = new bootstrap.Modal(document.getElementById('modal-update-review'), {backdrop: 'static'});
+
 
 export const buttonSignup = document.getElementById('button-signup')
 //export const buttonUpdatePassword = document.getElementById('update-password-button');

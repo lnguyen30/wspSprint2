@@ -145,7 +145,7 @@ export async function getReviewList(productId){
     const snapShot = await firebase.firestore()
                 .collection(Constant.collectionNames.REVIEWS)
                 .where('productId', '==', productId)
-                .orderBy('timestamp')
+                .orderBy('timestamp', 'desc') //.orderBy('timestamp', 'desc')
                 .get();
     const reviews = [];
 
@@ -267,9 +267,35 @@ export async function deleteUser(uid){
     await cf_deleteUser(uid);
 }
 
+// calls cf to delete review by docId
 const cf_deleteReview = firebase.functions().httpsCallable('cf_deleteReview');
 export async function deleteReview(docId){
     await cf_deleteReview(docId);
+}
+
+//firebase controller that calls cloud function to get reply by id
+const cf_getReviewById = firebase.functions().httpsCallable('cf_getReviewById'); // grabs the cloud function from index.js
+export async function getReviewById(docId){
+    //result will have the info of reply from docId
+    const result = await cf_getReviewById(docId);
+    
+    //create new review object if data exists
+    if(result.data){
+        //new review object
+        const review = new Review(result.data)
+        //assigns docId from result id
+        review.docId = result.data.docId
+        return review
+    }else{
+        return null;
+    }
+}
+
+const cf_updateReview = firebase.functions().httpsCallable('cf_updateReview')
+export async function updateReview(review){
+    const docId = review.docId
+    const data = review.serializeForUpdate();
+    await cf_updateReview({docId, data});
 }
 
 //deleteReview, might pass in user's email for authentication

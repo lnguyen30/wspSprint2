@@ -6,7 +6,7 @@ import * as Profile from './viewpage/profile_page.js'
 import * as Products from './viewpage/product_page.js'
 import * as Users from './viewpage/user_page.js'
 import * as Route from './controller/route.js'
-import * as Edit from './controller/edit_product.js'
+import * as Update from './controller/edit_review.js'
 
 
 
@@ -17,7 +17,7 @@ Cart.addEventListeners();
 Profile.addEventListeners();
 Products.addEventListeners();
 Users.addEventListeners();
-Edit.addEventListeners();
+Update.addEventListeners();
 
 window.onload = ()=>{
     //fetches the url of the page then passes it to the routing function

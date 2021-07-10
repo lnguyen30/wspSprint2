@@ -21,11 +21,29 @@ exports.cf_deleteProduct = functions.https.onCall(deleteProduct);
 exports.cf_getUserList = functions.https.onCall(getUserList);
 exports.cf_updateUser = functions.https.onCall(updateUser);
 exports.cf_deleteUser = functions.https.onCall(deleteUser); 
-exports.cf_deleteReview = functions.https.onCall(deleteReview);
+exports.cf_deleteReview = functions.https.onCall(deleteReview); 
+exports.cf_getReviewById = functions.https.onCall(getReviewById);
+exports.cf_updateReview = functions.https.onCall(updateReview);
+
+
 
 //returns true or false if the email passed in is an admin account
 function isAdmin(email){
     return Constant.adminEmails.includes(email);
+}
+
+//cloud function to update replies, called in firebase controller
+async function updateReview(reviewInfo, context){
+
+    
+    //reviewInfo = {docId, data}
+    try{
+        await admin.firestore().collection(Constant.collectionNames.REVIEWS)
+            .doc(reviewInfo.docId).update(reviewInfo.data)
+    }catch(e){
+        if(Constant.DEV) console.log(e)
+        throw new functions.https.HttpsError('internal', 'updateReply Failed')
+    }
 }
 
 //deletes reviews in firestore, called in fb_controller deleteReview
@@ -39,6 +57,30 @@ async function deleteReview(docId){
         throw new functions.https.HttpsError('internal', 'deleteReview Failed');
      }
 
+}
+
+//retrieves reviews by id from firestore
+async function getReviewById(data){
+    //retrieves review by docId/data
+    try{
+        const doc = await admin.firestore().collection(Constant.collectionNames.REVIEWS)
+                    .doc(data).get();
+        //if doc exists, then construct js review object
+        if(doc.exists){
+            //destructuring assignment
+            const {productId, uid, email, timestamp, content} = doc.data();
+            const r =  {productId, uid, email, timestamp, content}
+            r.docId = doc.id
+            return r;
+        }else{
+            //if doc doesn't exist
+            return null;
+        }
+
+    }catch(e){
+        if(Constant.DEV) console.log(e)
+        throw new functions.https.HttpsError('internal', 'getReviewById Failed')
+    }
 }
 
 //deletes users 

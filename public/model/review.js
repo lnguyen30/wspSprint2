@@ -6,7 +6,7 @@ export class Review{
         this.uid = data.uid;
         this.email = data.email;
         this.timestamp = data.timestamp;
-        this.content = data.content;
+        this.content = data.content.trim();
     }
 
     //to store new reply in firestore
@@ -31,5 +31,14 @@ export class Review{
             timestamp: this.timestamp,
             content: this.content,
         };
+    }
+
+    validate(){
+        const errors = {};
+
+        if(!this.content || this.content.length < 5){
+            errors.content = "Content too short; min 5 chars"
+        }
+        return errors
     }
 }
