@@ -48,8 +48,8 @@ export function addEventListeners(){
         try{
             await FirebaseController.updateReview(r)
             //updates browser
-            const cardTag = document.getElementById('card-'+r.docId)
-            cardTag.getElementsByClassName('card-text')[0].innerHTML = `${r.content}`;
+            // const cardTag = document.getElementById('card-'+r.docId)
+            // cardTag.getElementsByClassName('card-text')[0].innerHTML = `${r.content}`;
             Details.details_page(r.productId)
             
             Util.info('Updated Reply', 'Reply has been updated', Element.modalUpdateReview);
